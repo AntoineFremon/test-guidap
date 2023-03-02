@@ -1,0 +1,16 @@
+{
+  "name": "coding-assessment-nodejs",
+  "version": "1.0.0",
+  "description": "My marketplace",
+  "main": "./src/server.js",
+  "repository": "git@github.com:Guidap/coding-assessment-nodejs.git",
+  "author": "Baptiste Raymond <11996931+belisarus@users.noreply.github.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node ./src/server.js",
+    "start:debug": "node --inspect ./src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
