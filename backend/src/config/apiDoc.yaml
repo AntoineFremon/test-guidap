@@ -1,0 +1,145 @@
+openapi: "3.0.2"
+info:
+  title: API Bases de loisir
+  version: "0.1"
+servers:
+  - url: http://localhost:8000
+paths:
+  /users/:
+    get:
+      summary: Get a list of all users
+      responses:
+        '200':
+          description: Lists all saved users
+          content:
+            application/json:
+              schema:
+                type: array
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1
+                  username:
+                    type: string
+                    example: antoineadmin
+                  fistname:
+                    type: string
+                    example: Antoine
+                  lastname:
+                    type: string
+                    example: FREMON
+                  email:
+                    type: string
+                    example: antoine@guidap.co
+                  role:
+                    type: string
+                    example: admin
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+  /users/login:
+    post:
+      summary: Verifies the given login and password and returns the user info with a jwt. Used for authentication to the API.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - login
+                - password
+              properties:
+                login: string
+                password: string
+      responses:
+        '200':
+          description: User successfully authenticated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                    example: 1
+                  username:
+                    type: string
+                    example: antoineadmin
+                  fistname:
+                    type: string
+                    example: Antoine
+                  lastname:
+                    type: string
+                    example: FREMON
+                  email:
+                    type: string
+                    example: antoine@guidap.co
+                  token:
+                    type: string
+                  tokenExpiration:
+                    type: string
+                    example: 2023-03-05T19:42:00.000Z
+                  role:
+                    type: string
+                    example: admin
+          links:
+            GetJWT:
+              description: Token used to authenticate to the API
+              operationId: getToken
+              parameters:
+                token: $response.body.token
+
+        '400':
+          $ref: '#/components/responses/MissingRequiredField'
+        '422':
+          description: The given login and password do not match
+        '500':
+          description: Unexpected error, can be from the API itself or the database
+  /users/firstUser:
+    post:
+      summary: Creates the first user of the database as an admin.
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - email
+                - firstname
+                - lastname
+                - password
+              properties:
+                username: string
+                email: string
+                firstname: string
+                lastname: string
+                password: string
+      responses:
+        '201':
+          description: User successfully created
+        '400':
+          $ref: '#/components/responses/MissingRequiredField'
+        '403':
+          description: A user is already in the database, thus the route is not permitted
+        '500':
+          description: Unexpected error, can be from the API itself or the database
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+  responses:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+    MissingRequiredField:
+      description: Missing a required field in the request
+
+security:
+- BearerAuth: []

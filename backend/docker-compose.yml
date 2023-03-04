@@ -29,5 +29,11 @@ services:
       - postgres
     environment:
       NODE_ENV: development
-      DATABASE_URL: postgresql://user:password@postgres:5432/database?serverVersion=12.14
+      DATABASE_NAME: database
+      DATABASE_USER: user
+      DATABASE_PASSWORD: password
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      SQL_ALTER: "true"
+      SECRET: devSecret
     command: "npm run start:debug"
