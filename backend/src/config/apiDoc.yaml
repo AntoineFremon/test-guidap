@@ -37,6 +37,38 @@ paths:
                     example: admin
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+    post:
+      summary: Creates a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - username
+                - email
+                - firstname
+                - lastname
+                - password
+              properties:
+                username: string
+                email: string
+                firstname: string
+                lastname: string
+                password: string
+                role: string
+      responses:
+        '201':
+          description: User successfully created
+        '400':
+          $ref: '#/components/responses/MissingRequiredField'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
   /users/login:
     post:
       summary: Verifies the given login and password and returns the user info with a jwt. Used for authentication to the API.
@@ -97,7 +129,7 @@ paths:
         '422':
           description: The given login and password do not match
         '500':
-          description: Unexpected error, can be from the API itself or the database
+          $ref: '#/components/responses/UnexpectedError'
   /users/firstUser:
     post:
       summary: Creates the first user of the database as an admin.
@@ -128,7 +160,7 @@ paths:
         '403':
           description: A user is already in the database, thus the route is not permitted
         '500':
-          description: Unexpected error, can be from the API itself or the database
+          $ref: '#/components/responses/UnexpectedError'
 
 components:
   securitySchemes:
@@ -140,6 +172,8 @@ components:
       description: Access token is missing or invalid
     MissingRequiredField:
       description: Missing a required field in the request
+    UnexpectedError:
+      description: Unexpected error, can be from the API itself or the database
 
 security:
 - BearerAuth: []
