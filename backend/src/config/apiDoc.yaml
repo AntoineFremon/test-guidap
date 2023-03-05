@@ -5,6 +5,30 @@ info:
 servers:
   - url: http://localhost:8000
 paths:
+  /activities/:
+    post:
+      summary: Create a new activity
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Activity'
+      responses:
+        '201':
+          description: Activity successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Activity'
+        '400':
+          $ref: '#/components/responses/MissingRequiredField'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+
+
   /users/:
     get:
       summary: Get a list of all users
@@ -174,6 +198,19 @@ components:
       description: Missing a required field in the request
     UnexpectedError:
       description: Unexpected error, can be from the API itself or the database
+  schemas:
+    Activity:
+      type: object
+      required:
+        - name
+        - description
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        photoUrl:
+          type: string
 
 security:
 - BearerAuth: []
