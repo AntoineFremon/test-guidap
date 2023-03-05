@@ -16,4 +16,16 @@ router.post(
     }
 );
 
+router.get(
+    '/',
+    routing.auth(true),
+    (req, res, next) => {
+        activitiesController.getAll()
+            .then((activities) => {
+                routing.sendResponse(200, req, res, next, { activities });
+            })
+            .catch(next);
+    }
+);
+
 module.exports = router;

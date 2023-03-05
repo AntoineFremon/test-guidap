@@ -53,7 +53,7 @@ function checkRequiredFields(fieldArray) {
 function auth(optional) {
     return expressJWT.expressjwt({
         secret: process.env.SECRET,
-        credentialsRequired: optional,
+        credentialsRequired: !optional,
         algorithms: ['HS256']
     });
 }
