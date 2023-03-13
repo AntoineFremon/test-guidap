@@ -36,4 +36,5 @@ services:
       DATABASE_PORT: 5432
       SQL_ALTER: "true"
       SECRET: devSecret
+      MAPBOX_TOKEN: mapbox.token
     command: "npm run start:debug"
