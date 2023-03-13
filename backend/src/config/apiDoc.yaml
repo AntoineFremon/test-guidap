@@ -41,6 +41,59 @@ paths:
                   $ref: '#/components/schemas/Activity'
         '500':
           $ref: '#/components/responses/UnexpectedError'
+  /leisures/:
+    post:
+      summary: Create a new leisure base
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Leisure'
+      responses:
+        '201':
+          description: Leisure base successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leisure'
+        '400':
+          $ref: '#/components/responses/MissingRequiredField'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+    get:
+      summary: Get a list of leisure bases
+      security: []
+      parameters:
+        - in: query
+          name: pageSize
+          description: Number of leisure bases to return
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 20
+        - in: query
+          name: offset
+          description: Number of leisure bases to start the query from
+          required: false
+          schema:
+            type: integer
+            minimum: 0
+            default: 0
+      responses:
+        '200':
+          description: The list of leisure bases asked for
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Leisure'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
 
   /users/:
     get:
@@ -223,6 +276,25 @@ components:
         description:
           type: string
         photoUrl:
+          type: string
+    Leisure:
+      type: object
+      required:
+        - name
+        - address
+        - coordinates
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        address:
+          type: string
+        coordinates:
+          type: string
+        webLink:
+          type: string
+        activities:
           type: string
 
 security:
