@@ -9,7 +9,7 @@ router.post(
     routing.checkRequiredFields(['name', 'description']),
     (req, res, next) => {
         leisuresController.createLeisure(
-            req.body.activities,
+            req.body.activitiesId,
             req.body.name,
             req.body.description,
             req.body.address,
@@ -30,6 +30,19 @@ router.get(
         leisuresController.getLeisures(req.query.pageSize, req.query.offset)
             .then((leisures) => {
                 routing.sendResponse(200, req, res, next, { leisures });
+            })
+            .catch(next);
+    }
+);
+
+router.put(
+    '/:id',
+    routing.auth(),
+    routing.adminOnly,
+    (req, res, next) => {
+        leisuresController.updateLeisure(req.params.id, req.body)
+            .then((leisure) => {
+                routing.sendResponse(200, req, res, next, { leisure });
             })
             .catch(next);
     }

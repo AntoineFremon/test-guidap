@@ -95,6 +95,36 @@ paths:
         '500':
           $ref: '#/components/responses/UnexpectedError'
 
+  /leisures/{id}:
+    put:
+      summary: Update a leisure base
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Leisure'
+      responses:
+        '200':
+          description: The leisure base was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Leisure'
+        '404':
+          description: The leisure base with the given id was not found
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
+
   /users/:
     get:
       summary: Get a list of all users
@@ -294,8 +324,8 @@ components:
           type: string
         webLink:
           type: string
-        activities:
-          type: string
+        activitiesId:
+          type: array
 
 security:
 - BearerAuth: []

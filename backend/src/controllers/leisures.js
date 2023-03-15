@@ -5,7 +5,8 @@ const Activity = require('../models/Activity');
 
 module.exports = {
     createLeisure,
-    getLeisures
+    getLeisures,
+    updateLeisure
 };
 
 function createLeisure(activitiesId, name, description, address, coordinates, webLink) {
@@ -24,7 +25,7 @@ function createLeisure(activitiesId, name, description, address, coordinates, we
         webLink
     })
         .then((createdLeisure) => {
-            return createdLeisure.setActivities(activitiesId.split(','))
+            return createdLeisure.setActivities(activitiesId)
                 .then(() => {
                     return Leisure.findByPk(createdLeisure.id, { include: [Activity] });
                 });
@@ -39,5 +40,27 @@ function getCoordinates(address) {
     return axios.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${address}.json?access_token=${process.env.MAPBOX_TOKEN}`)
         .then((response) => {
             return Promise.resolve(response.data.features[0].geometry.coordinates[0] + ',' + response.data.features[0].geometry.coordinates[1]);
+        });
+}
+
+function updateLeisure(leisureId, body) {
+    return Leisure.findByPk(leisureId)
+        .then((leisure) => {
+            if (!leisure) {
+                return Promise.reject({ status: 404, message: 'Leisure not found with id ' + leisureId });
+            }
+
+            const promises = [
+                Leisure.update(body, { where: { id: leisureId } })
+            ];
+
+            if (body.activitiesId) {
+                promises.push(leisure.setActivities(body.activitiesId));
+            }
+
+            return Promise.all(promises);
+        })
+        .then(() => {
+            return Leisure.findByPk(leisureId, { include: [Activity] });
         });
 }
