@@ -48,4 +48,17 @@ router.put(
     }
 );
 
+router.delete(
+    '/:id',
+    routing.auth(),
+    routing.adminOnly,
+    (req, res, next) => {
+        leisuresController.deleteLeisure(req.params.id)
+            .then(() => {
+                routing.sendResponse(204, req, res, next);
+            })
+            .catch(next);
+    }
+);
+
 module.exports = router;

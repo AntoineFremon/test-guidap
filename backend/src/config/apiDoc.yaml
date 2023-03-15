@@ -124,6 +124,22 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         '500':
           $ref: '#/components/responses/UnexpectedError'
+    delete:
+      summary: Delete a leisure base
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: The leisure base was successfully deleted
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+        '500':
+          $ref: '#/components/responses/UnexpectedError'
 
   /users/:
     get:

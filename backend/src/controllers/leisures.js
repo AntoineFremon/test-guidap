@@ -6,7 +6,8 @@ const Activity = require('../models/Activity');
 module.exports = {
     createLeisure,
     getLeisures,
-    updateLeisure
+    updateLeisure,
+    deleteLeisure
 };
 
 function createLeisure(activitiesId, name, description, address, coordinates, webLink) {
@@ -63,4 +64,8 @@ function updateLeisure(leisureId, body) {
         .then(() => {
             return Leisure.findByPk(leisureId, { include: [Activity] });
         });
+}
+
+function deleteLeisure(leisureId) {
+    return Leisure.destroy({ where: { id: leisureId } });
 }
