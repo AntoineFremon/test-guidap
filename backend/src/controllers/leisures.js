@@ -34,7 +34,9 @@ function createLeisure(activitiesId, name, description, address, coordinates, we
 }
 
 function getLeisures(pageSize = 20, offset = 0) {
-    return Leisure.findAll({ limit: pageSize, offset, include: 'Activities' });
+    return Leisure.findAll({
+        limit: pageSize, offset, include: 'Activities', sort: ['id']
+    });
 }
 
 function getCoordinates(address) {
