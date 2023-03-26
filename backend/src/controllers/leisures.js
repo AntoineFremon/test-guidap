@@ -33,9 +33,13 @@ function createLeisure(activitiesId, name, description, address, coordinates, we
         });
 }
 
-function getLeisures(pageSize = 20, offset = 0) {
+function getLeisures(activityId, pageSize = 20, offset = 0) {
+    let include = 'Activities';
+    if (activityId) {
+        include = { model: Activity, where: { id: activityId } };
+    }
     return Leisure.findAll({
-        limit: pageSize, offset, include: 'Activities', sort: ['id']
+        limit: pageSize, offset, include, sort: ['id']
     });
 }
 
