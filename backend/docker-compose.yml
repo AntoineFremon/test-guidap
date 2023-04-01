@@ -4,7 +4,7 @@ services:
 
   postgres:
     container_name: coding-assessment-nodejs_postgres
-    image: postgres:12.14
+    image: postgres:15-alpine
     volumes:
       - ./data/postgresql:/var/lib/postgresql/data
     ports:
@@ -13,6 +13,14 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: database
+      LANG: fr_FR
+      POSTGRES_INITDB_ARGS: "--locale-provider=icu --icu-locale=fr-FR"
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+    - "8080:8080"
 
   backend:
     container_name: coding-assessment-nodejs

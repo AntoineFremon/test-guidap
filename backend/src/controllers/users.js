@@ -4,7 +4,6 @@ const User = require('../models/User');
 
 module.exports = {
     logIn,
-    createFirstUser,
     getAll,
     createUser
 };
@@ -24,17 +23,6 @@ function logIn(login, password) {
             }
 
             return Promise.resolve(foundUser.toAuth());
-        });
-}
-
-function createFirstUser(username, email, firstname, lastname, password) {
-    return User.findOne()
-        .then((alreadyThere) => {
-            if (alreadyThere) {
-                return Promise.reject({ status: 403, message: 'There is already a user in the database.' });
-            }
-
-            return createUser(username, email, firstname, lastname, password, 'admin');
         });
 }
 

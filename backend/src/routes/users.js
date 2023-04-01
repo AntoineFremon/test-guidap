@@ -15,24 +15,6 @@ router.post(
     }
 );
 
-router.post(
-    '/firstUser',
-    routing.checkRequiredFields(['username', 'email', 'firstname', 'lastname', 'password']),
-    (req, res, next) => {
-        usersController.createFirstUser(
-            req.body.username,
-            req.body.email,
-            req.body.firstname,
-            req.body.lastname,
-            req.body.password
-        )
-            .then((user) => {
-                routing.sendResponse(201, req, res, next, { user });
-            })
-            .catch(next);
-    }
-);
-
 router.get(
     '/',
     routing.auth(),

@@ -266,37 +266,6 @@ paths:
           description: The given login and password do not match
         '500':
           $ref: '#/components/responses/UnexpectedError'
-  /users/firstUser:
-    post:
-      summary: Creates the first user of the database as an admin.
-      security: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - username
-                - email
-                - firstname
-                - lastname
-                - password
-              properties:
-                username: string
-                email: string
-                firstname: string
-                lastname: string
-                password: string
-      responses:
-        '201':
-          description: User successfully created
-        '400':
-          $ref: '#/components/responses/MissingRequiredField'
-        '403':
-          description: A user is already in the database, thus the route is not permitted
-        '500':
-          $ref: '#/components/responses/UnexpectedError'
 
 components:
   securitySchemes:
