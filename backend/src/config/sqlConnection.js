@@ -21,12 +21,12 @@ const connect = async () => {
         // If the connection has an error, we try again after 5 seconds
         // Sometimes with a large database it takes a while for it to be accessible, so we just wait.
         // Ideally here we email an admin who can assess and fix the problem.
-        setTimeout(connect, 5000);
+        setTimeout(connect, 10000);
     }
 };
 
 // Usage of alter is considered risky in prod, so please don't put it in prod's env variables :)
 sequelize.sync({ alter: process.env.SQL_ALTER === 'true' });
-setTimeout(connect, 5000);
+setTimeout(connect, 10000);
 
 module.exports = sequelize;

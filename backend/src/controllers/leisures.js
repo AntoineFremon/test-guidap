@@ -1,4 +1,5 @@
 const axios = require('axios');
+const { Op } = require('sequelize');
 
 const Leisure = require('../models/Leisure');
 const Activity = require('../models/Activity');
@@ -33,13 +34,28 @@ function createLeisure(activitiesId, name, description, address, coordinates, we
         });
 }
 
-function getLeisures(activityId, pageSize = 20, offset = 0) {
+function getLeisures(activityId, search, pageSize = 20, offset = 0) {
     let include = 'Activities';
     if (activityId) {
         include = { model: Activity, where: { id: activityId } };
     }
+
+    let where = {};
+    if (search) {
+        let accentedSearch = '';
+        for (let i = 0; i < search.length; i++) {
+            accentedSearch += `[=${search[i]}=]`;
+        }
+
+        where = {
+            [Op.or]: [
+                { name: { [Op.iRegexp]: `[${accentedSearch}]` } },
+                { description: { [Op.iRegexp]: `[${accentedSearch}]` } }
+            ]
+        };
+    }
     return Leisure.findAll({
-        limit: pageSize, offset, include, sort: ['id']
+        where, limit: pageSize, offset, include, sort: ['id']
     });
 }
 

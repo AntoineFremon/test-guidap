@@ -27,7 +27,7 @@ router.get(
     '/',
     routing.auth(true),
     (req, res, next) => {
-        leisuresController.getLeisures(req.query.activityId, req.query.pageSize, req.query.offset)
+        leisuresController.getLeisures(req.query.activityId, req.query.search, req.query.pageSize, req.query.offset)
             .then((leisures) => {
                 routing.sendResponse(200, req, res, next, { leisures });
             })
