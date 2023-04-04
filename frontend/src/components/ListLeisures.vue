@@ -27,66 +27,45 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex';
 import LeisureCard from "./LeisureCard.vue";
-import axios from 'axios';
 
 export default {
   name: "ListLeisures",
   data() {
     return {
-      listLeisures: [],
-      listActivities: [],
-      loading: false,
       activity: null,
       interval: null,
       inputText: ''
     }
   },
+  computed: mapState({
+    listActivities: state => state.activities.all,
+    listLeisures: state => state.leisures.all,
+    loading: state => state.leisures.loading
+  }),
   methods: {
-    onActivityClick(activityId) {
-      this.listLeisures = [];
-      this.activity = activityId;
-      this.getLeisures(2,0);
+    getLeisures() {
+      console.log('before dispatch', this.activity, this.inputText)
+      this.$store.dispatch('leisures/getLeisures', { activityId: this.activity, inputText: this.inputText });
     },
-    getLeisures(pageSize, offset) {
-      this.loading = true;
-      let query = `http://localhost:8000/leisures?pageSize=${pageSize}&offset=${offset}`;
-      if (this.activity) {
-        query += `&activityId=${this.activity}`
-      }
-
-      if (this.inputText) {
-        query += `&search=${this.inputText}`;
-      }
-      axios
-          .get(query)
-          .then((response) => {
-            this.listLeisures.push(...response.data.leisures);
-            if (response.data.leisures.length === pageSize) {
-              this.getLeisures(pageSize, offset+pageSize);
-            } else {
-              this.loading = false;
-            }
-          });
+    onActivityClick(activityId) {
+      this.activity = activityId;
+      this.getLeisures();
     },
     onSearchInput(inputText) {
       this.inputText = inputText;
       clearTimeout(this.interval);
       this.interval = setTimeout(() => {
-        this.listLeisures = [];
-        this.getLeisures(2, 0)
+        this.getLeisures()
       },
           1000
       );
     }
   },
-  mounted() {
-    this.getLeisures(2, 0);
-    axios
-        .get(`http://localhost:8000/activities`)
-        .then((response) => {
-          this.listActivities = response.data.activities;
-        });
+  created() {
+    this.$store.dispatch('activities/getAllActivites');
+    this.$store.dispatch('leisures/getLeisures', {});
   },
   components: {
     LeisureCard
