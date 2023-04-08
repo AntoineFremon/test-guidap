@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState } from 'vuex';
 import LeisureCard from "./LeisureCard.vue";
 
 export default {
@@ -46,7 +46,6 @@ export default {
   }),
   methods: {
     getLeisures() {
-      console.log('before dispatch', this.activity, this.inputText)
       this.$store.dispatch('leisures/getLeisures', { activityId: this.activity, inputText: this.inputText });
     },
     onActivityClick(activityId) {
