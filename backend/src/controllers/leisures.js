@@ -1,5 +1,6 @@
 const axios = require('axios');
 const { Op } = require('sequelize');
+const lodash = require('lodash');
 
 const Leisure = require('../models/Leisure');
 const Activity = require('../models/Activity');
@@ -19,9 +20,14 @@ function createLeisure(activitiesId, name, description, address, coordinates, we
             });
     }
 
+    const deburredName = lodash.deburr(name);
+    const deburredDescription = lodash.deburr(description);
+
     return Leisure.create({
         name,
+        deburredName,
         description,
+        deburredDescription,
         address,
         coordinates,
         webLink
@@ -42,15 +48,10 @@ function getLeisures(activityId, search, pageSize = 20, offset = 0) {
 
     let where = {};
     if (search) {
-        let accentedSearch = '';
-        for (let i = 0; i < search.length; i++) {
-            accentedSearch += `[=${search[i]}=]`;
-        }
-
         where = {
             [Op.or]: [
-                { name: { [Op.iRegexp]: `[${accentedSearch}]` } },
-                { description: { [Op.iRegexp]: `[${accentedSearch}]` } }
+                { deburredName: { [Op.iRegexp]: lodash.deburr(search) } },
+                { deburredDescription: { [Op.iRegexp]: lodash.deburr(search) } }
             ]
         };
     }

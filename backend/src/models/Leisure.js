@@ -10,7 +10,16 @@ const Leisure = sequelize.define('Leisure', {
         allowNull: false,
         index: true
     },
+    deburredName: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+        index: true
+    },
     description: {
+        type: DataTypes.STRING
+    },
+    deburredDescription: {
         type: DataTypes.STRING
     },
     address: {
