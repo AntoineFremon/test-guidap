@@ -3,7 +3,8 @@ import service from '../service';
 // initial state
 const state = () => ({
     all: [],
-    loading: false
+    loading: false,
+    selectedLeisureId: 0
 });
 
 // getters
@@ -16,6 +17,9 @@ const actions = {
         commit('setLeisures', []);
         await loopLeisures(commit, 2, 0, activityId, inputText);
         commit('setLoading', false);
+    },
+    selectLeisure({ commit }, leisureId) {
+        commit('setSelectedLeisureId', leisureId);
     }
 };
 
@@ -38,6 +42,9 @@ const mutations = {
     },
     setLoading(localState, value) {
         localState.loading = value;
+    },
+    setSelectedLeisureId(localState, value) {
+        localState.selectedLeisureId = value;
     }
 };
 
