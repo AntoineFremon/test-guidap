@@ -19,11 +19,11 @@ export default {
   },
   methods: {
     select() {
-      this.$store.dispatch('leisures/selectLeisure', this.leisure.id);
+      this.$store.dispatch('leisures/selectLeisure', this.leisure);
     }
   },
   computed: mapState({
-    selectedLeisureId: state => state.leisures.selectedLeisureId
+    selectedLeisureId: state => state.leisures.selectedLeisure?.id
   }),
   watch: {
     selectedLeisureId(updatedLeisure) {
