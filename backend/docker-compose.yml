@@ -42,7 +42,6 @@ services:
       DATABASE_PASSWORD: password
       DATABASE_HOST: postgres
       DATABASE_PORT: 5432
-      SQL_ALTER: "true"
       SECRET: devSecret
       MAPBOX_TOKEN: MAPBOX_TOKEN
       OPEN_WEATHER_API_TOKEN: WEATHER_TOKEN

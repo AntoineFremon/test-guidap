@@ -8,6 +8,12 @@ This template should help get you started developing with Vue 3.
 npm install
 ```
 
+### Environment
+Copy `.env.sample` to `.env`, and fill the values:
+1. Your API address in `VITE_API_ADDRESS`
+2. Your Mapbox token (should be the same as in your API) in `VITE_MAPBOX_ACCESS_TOKEN`
+
+
 ### Compile and Hot-Reload for Development
 
 ```sh
