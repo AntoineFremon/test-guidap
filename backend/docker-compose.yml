@@ -44,5 +44,6 @@ services:
       DATABASE_PORT: 5432
       SQL_ALTER: "true"
       SECRET: devSecret
-      MAPBOX_TOKEN: pk.eyJ1IjoiYW50b2luZWZyZW1vbiIsImEiOiJjbGV2ZTMxNTEwMjUzM3FtaWZ3MjhueWd0In0.-kD8wKOtWVOSoeFzTAuCdQ
+      MAPBOX_TOKEN: MAPBOX_TOKEN
+      OPEN_WEATHER_API_TOKEN: WEATHER_TOKEN
     command: "npm run start:debug"

@@ -1,9 +1,12 @@
 const axios = require('axios');
 const { Op } = require('sequelize');
 const lodash = require('lodash');
+const moment = require('moment');
 
 const Leisure = require('../models/Leisure');
 const Activity = require('../models/Activity');
+
+const weatherController = require('./weather');
 
 module.exports = {
     createLeisure,
@@ -57,7 +60,25 @@ function getLeisures(activityId, search, pageSize = 20, offset = 0) {
     }
     return Leisure.findAll({
         where, limit: pageSize, offset, include, sort: ['id']
-    });
+    })
+        .then((leisures) => {
+            const limit = moment().subtract(1, 'hours');
+            leisures.forEach(async (l) => {
+                if (!l.weatherDate || moment(l.weatherDate).isBefore(limit)) {
+                    const weather = await weatherController.getCurrentWeather(l.coordinates.split(',')[0], l.coordinates.split(',')[1]);
+                    l.weatherDescription = weather.description;
+                    l.weatherIcon = weather.icon;
+                    l.weatherDate = moment().toISOString();
+                    await l.save()
+                        .catch((e) => {
+                            console.log('Error fetching weather for ' + l.coordinates);
+                            console.log(e.data);
+                        });
+                }
+            });
+
+            return Promise.resolve(leisures);
+        });
 }
 
 function getCoordinates(address) {

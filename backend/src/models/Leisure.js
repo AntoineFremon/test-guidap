@@ -32,6 +32,15 @@ const Leisure = sequelize.define('Leisure', {
     },
     webLink: {
         type: DataTypes.STRING
+    },
+    weatherDescription: {
+        type: DataTypes.STRING
+    },
+    weatherIcon: {
+        type: DataTypes.STRING
+    },
+    weatherDate: {
+        type: DataTypes.DATE
     }
 });
 
