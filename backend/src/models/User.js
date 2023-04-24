@@ -34,12 +34,6 @@ const User = sequelize.define('User', {
     salt: {
         type: DataTypes.STRING,
         allowNull: false
-    },
-    reset_password_token: {
-        type: DataTypes.STRING
-    },
-    reset_password_expires: {
-        type: DataTypes.DATE
     }
 }, {
     indexes: [{ unique: true, fields: ['username', 'email'] }]
